@@ -1,11 +1,7 @@
-import Home from "./pages/Home";
+import AppRouter from "./components/routes/AppRouter";
 
 function App() {
-  return (
-    <div className="min-h-screen bg-slate-100">
-      <Home />
-    </div>
-  );
+  return <AppRouter />;
 }
 
 export default App;
