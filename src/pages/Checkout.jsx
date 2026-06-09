@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
-import { CartContext } from "../context/CartContext";
+import { Cartcontext } from "../context/Cartcontext";
 
 function Checkout() {
-  const { cart } = useContext(CartContext);
+  const { cart } = useContext(Cartcontext);
 
   const handleSubmit = async (e) => {
     if (!formData.nombre.trim()) {

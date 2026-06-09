@@ -4,10 +4,10 @@ import ProductCard from "../components/ProductCard";
 import Navbar from "../components/navbar/Navbar";
 import Cart from "../components/cart/Cart";
 import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { Cartcontext } from "../context/Cartcontext";
 
 function Home() {
-  const { cart, setCart, addToCart } = useContext(CartContext);
+  const { cart, setCart, addToCart } = useContext(Cartcontext);
   const [products, setProducts] = useState([]);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
