@@ -1,23 +1,32 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Admin() {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    precio: "",
-    stock: "",
-  });
-
+  const [nombre, setNombre] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [stock, setStock] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [stats, setStats] = useState(null);
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
 
   const loadProducts = async () => {
     try {
       const response = await fetch("http://localhost:3000/products");
-
       const data = await response.json();
 
       setProducts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadDashboard = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/dashboard");
+
+      const data = await response.json();
+
+      setStats(data);
     } catch (error) {
       console.error(error);
     }
@@ -27,33 +36,37 @@ function Admin() {
     loadProducts();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  useEffect(() => {
+    loadDashboard();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      let imageUrl = "";
+      let imageUrl = editingProduct?.image_url || "";
 
       if (imageFile) {
-        const uploadData = new FormData();
+        const formData = new FormData();
 
-        uploadData.append("image", imageFile);
+        formData.append("image", imageFile);
 
         const uploadResponse = await fetch("http://localhost:3000/upload", {
           method: "POST",
-          body: uploadData,
+          body: formData,
         });
 
         const uploadResult = await uploadResponse.json();
 
         imageUrl = uploadResult.imageUrl;
       }
+
+      const productData = {
+        nombre,
+        precio: Number(precio),
+        stock: Number(stock),
+        image_url: imageUrl,
+      };
 
       const response = await fetch(
         editingProduct
@@ -64,10 +77,7 @@ function Admin() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...formData,
-            image_url: imageUrl || (editingProduct?.image_url ?? ""),
-          }),
+          body: JSON.stringify(productData),
         },
       );
 
@@ -75,25 +85,17 @@ function Admin() {
         throw new Error("Error al guardar producto");
       }
 
-      alert(
-        editingProduct
-          ? "Producto actualizado correctamente"
-          : "Producto creado correctamente",
-      );
+      alert(editingProduct ? "Producto actualizado" : "Producto creado");
 
-      setFormData({
-        nombre: "",
-        precio: "",
-        stock: "",
-      });
-
+      setNombre("");
+      setPrecio("");
+      setStock("");
       setImageFile(null);
       setEditingProduct(null);
 
       loadProducts();
     } catch (error) {
       console.error(error);
-
       alert("Error al guardar producto");
     }
   };
@@ -115,112 +117,132 @@ function Admin() {
       loadProducts();
     } catch (error) {
       console.error(error);
-
       alert("Error al eliminar producto");
     }
   };
 
+  const startEdit = (product) => {
+    setEditingProduct(product);
+
+    setNombre(product.nombre);
+    setPrecio(product.precio);
+    setStock(product.stock);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-6">🛠️ Panel Admin</h1>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Panel Administrador</h1>
+
+      {stats && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-blue-500 text-white p-5 rounded-xl shadow">
+            <h3 className="text-lg">Productos</h3>
+            <p className="text-3xl font-bold">{stats.totalProducts}</p>
+          </div>
+
+          <div className="bg-green-500 text-white p-5 rounded-xl shadow">
+            <h3 className="text-lg">Órdenes</h3>
+            <p className="text-3xl font-bold">{stats.totalOrders}</p>
+          </div>
+
+          <div className="bg-purple-500 text-white p-5 rounded-xl shadow">
+            <h3 className="text-lg">Ventas</h3>
+            <p className="text-3xl font-bold">
+              ${Number(stats.totalSales).toLocaleString()}
+            </p>
+          </div>
+
+          <div className="bg-red-500 text-white p-5 rounded-xl shadow">
+            <h3 className="text-lg">Stock Bajo</h3>
+            <p className="text-3xl font-bold">{stats.lowStock}</p>
+          </div>
+        </div>
+      )}
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 border p-6 rounded-lg shadow"
+        className="border p-6 rounded-lg shadow mb-10"
       >
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
-        />
+        <h2 className="text-2xl font-bold mb-4">
+          {editingProduct ? "✏️ Editar Producto" : "➕ Crear Producto"}
+        </h2>
 
-        <input
-          type="number"
-          name="precio"
-          placeholder="Precio"
-          value={formData.precio}
-          onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
-        />
+        <div className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            className="border p-3 rounded"
+            required
+          />
 
-        <input
-          type="number"
-          name="stock"
-          placeholder="Stock"
-          value={formData.stock}
-          onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
-        />
+          <input
+            type="number"
+            placeholder="Precio"
+            value={precio}
+            onChange={(e) => setPrecio(e.target.value)}
+            className="border p-3 rounded"
+            required
+          />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files[0])}
-          className="w-full border p-3 rounded-lg"
-        />
+          <input
+            type="number"
+            placeholder="Stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            className="border p-3 rounded"
+            required
+          />
 
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700"
-        >
-          {editingProduct ? "Actualizar producto" : "Crear producto"}
-        </button>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files[0])}
+            className="border p-3 rounded"
+          />
+
+          <button
+            type="submit"
+            className="bg-blue-600 text-white p-3 rounded hover:bg-blue-700"
+          >
+            {editingProduct ? "Actualizar Producto" : "Crear Producto"}
+          </button>
+        </div>
       </form>
 
-      <div className="mt-10">
-        <h2 className="text-2xl font-bold mb-4">📦 Productos</h2>
+      <h2 className="text-2xl font-bold mb-4">📦 Productos</h2>
 
-        <div className="space-y-3">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg p-4 flex justify-between items-center"
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="border rounded-lg p-4 shadow">
+            <img
+              src={product.image_url}
+              alt={product.nombre}
+              className="w-full h-48 object-cover rounded-lg mb-3"
+            />
+
+            <h3 className="font-bold text-xl">{product.nombre}</h3>
+
+            <p>💲 {product.precio}</p>
+
+            <p>📦 Stock: {product.stock}</p>
+
+            <button
+              onClick={() => startEdit(product)}
+              className="mt-3 w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600"
             >
-              <div>
-                {product.image_url && (
-                  <img
-                    src={product.image_url}
-                    alt={product.nombre}
-                    className="w-24 h-24 object-cover rounded-lg mb-2"
-                  />
-                )}
+              ✏️ Editar
+            </button>
 
-                <h3 className="font-bold text-lg">{product.nombre}</h3>
-
-                <p>💲 {product.precio}</p>
-
-                <p>📦 Stock: {product.stock}</p>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    setEditingProduct(product);
-
-                    setFormData({
-                      nombre: product.nombre,
-                      precio: product.precio,
-                      stock: product.stock,
-                    });
-                  }}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                >
-                  ✏️ Editar
-                </button>
-
-                <button
-                  onClick={() => deleteProduct(product.id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-                >
-                  🗑 Eliminar
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+            <button
+              onClick={() => deleteProduct(product.id)}
+              className="mt-2 w-full bg-red-600 text-white py-2 rounded hover:bg-red-700"
+            >
+              🗑 Eliminar
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

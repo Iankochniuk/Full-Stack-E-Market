@@ -31,36 +31,61 @@ function Navbar({ cartCount, toggleCart }) {
           </Link>
         </li>
 
-        <li>
-          <Link to="/orders" className="hover:text-blue-400">
-            Pedidos
-          </Link>
-        </li>
+        {user && (
+          <li>
+            <Link to="/my-orders" className="hover:text-blue-400">
+              Mis Compras
+            </Link>
+          </li>
+        )}
+
+        {user?.role === "admin" && (
+          <li>
+            <Link to="/admin" className="hover:text-yellow-400 font-bold">
+              Admin
+            </Link>
+          </li>
+        )}
 
         <li onClick={toggleCart} className="cursor-pointer hover:text-blue-400">
           🛒 Carrito ({cartCount})
         </li>
 
         {user ? (
-          <li className="flex items-center gap-3">
-            <span>👋 {user.nombre}</span>
+          <>
+            <li>
+              <span>👋 {user.nombre}</span>
+            </li>
 
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700"
-            >
-              Salir
-            </button>
-          </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 px-3 py-2 rounded-lg hover:bg-red-700"
+              >
+                Salir
+              </button>
+            </li>
+          </>
         ) : (
-          <li>
-            <Link
-              to="/login"
-              className="bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Login
-            </Link>
-          </li>
+          <>
+            <li>
+              <Link
+                to="/login"
+                className="bg-blue-600 px-3 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Login
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/register"
+                className="bg-green-600 px-3 py-2 rounded-lg hover:bg-green-700"
+              >
+                Registro
+              </Link>
+            </li>
+          </>
         )}
       </ul>
     </nav>
