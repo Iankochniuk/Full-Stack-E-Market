@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./config/cloudinary");
+require("./config/ClouDinary");
 
 const ordersRoutes = require("./router/Orders.Router");
 const express = require("express");
