@@ -2,13 +2,13 @@ const express = require("express");
 const multer = require("multer");
 const cloudinary = require("../config/cloudinary");
 
-const Router = express.Router();
+const router = express.Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-Router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const file = req.file;
 
@@ -38,4 +38,4 @@ Router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-module.exports = Router;
+module.exports = router;

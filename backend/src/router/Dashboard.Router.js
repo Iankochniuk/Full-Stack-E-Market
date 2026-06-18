@@ -1,9 +1,9 @@
 const express = require("express");
 const pool = require("../config/db");
 
-const Router = express.Router();
+const router = express.Router();
 
-Router.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const products = await pool.query(`
       SELECT COUNT(*) as total_products
@@ -41,4 +41,4 @@ Router.get("/", async (req, res) => {
   }
 });
 
-module.exports = Router;
+module.exports = router;
