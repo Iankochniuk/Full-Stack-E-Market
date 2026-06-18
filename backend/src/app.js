@@ -7,7 +7,6 @@ const cors = require("cors");
 const authRoutes = require("./router/Auth.Router");
 const uploadRoutes = require("./router/Upload.Router");
 const dashboardRouter = require("./router/Dashboard.Router");
-
 const productsRoutes = require("./router/Products.Router");
 
 const app = express();
