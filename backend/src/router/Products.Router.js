@@ -1,12 +1,12 @@
 const express = require("express");
 const pool = require("../config/db");
 
-const router = express.Router();
+const Router = express.Router();
 
 /* =========================
    TEST CONEXIÓN DB
 ========================= */
-router.get("/test-db", async (req, res) => {
+Router.get("/test-db", async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
@@ -25,7 +25,7 @@ router.get("/test-db", async (req, res) => {
   }
 });
 
-router.get("/debug", async (req, res) => {
+Router.get("/debug", async (req, res) => {
   try {
     const db = await pool.query("SELECT current_database()");
     const tables = await pool.query(`
@@ -53,7 +53,7 @@ router.get("/debug", async (req, res) => {
 /* =========================
                  GET - Todos los productos
               ========================= */
-router.get("/", async (req, res) => {
+Router.get("/", async (req, res) => {
   try {
     console.log("Intentando consultar tabla products...");
 
@@ -80,7 +80,7 @@ router.get("/", async (req, res) => {
 /* =========================
    POST - Crear producto
 ========================= */
-router.post("/", async (req, res) => {
+Router.post("/", async (req, res) => {
   const { nombre, precio, stock, image_url } = req.body;
 
   try {
@@ -107,7 +107,7 @@ router.post("/", async (req, res) => {
 /* =========================
    PUT - Actualizar producto
 ========================= */
-router.put("/:id", async (req, res) => {
+Router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { nombre, precio, stock, image_url } = req.body;
 
@@ -145,7 +145,7 @@ router.put("/:id", async (req, res) => {
 /* =========================
    DELETE - Eliminar producto
 ========================= */
-router.delete("/:id", async (req, res) => {
+Router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -176,7 +176,7 @@ router.delete("/:id", async (req, res) => {
 /* =========================
    GET - Producto por ID
 ========================= */
-router.get("/:id", async (req, res) => {
+Router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -200,4 +200,4 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = Router;

@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/db");
 
-const router = express.Router();
+const Router = express.Router();
 
 /*
 =================================
@@ -11,7 +11,7 @@ REGISTRO
 =================================
 */
 
-router.post("/register", async (req, res) => {
+Router.post("/register", async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
@@ -60,7 +60,7 @@ LOGIN
 =================================
 */
 
-router.post("/login", async (req, res) => {
+Router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/hash/:password", async (req, res) => {
+Router.get("/hash/:password", async (req, res) => {
   const hash = await bcrypt.hash(req.params.password, 10);
 
   res.json({
@@ -123,4 +123,4 @@ router.get("/hash/:password", async (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = Router;

@@ -1,13 +1,13 @@
 const express = require("express");
 const pool = require("../config/db");
 
-const router = express.Router();
+const Router = express.Router();
 
 /* =========================
    POST - Crear orden
 ========================= */
 
-router.post("/", async (req, res) => {
+Router.post("/", async (req, res) => {
   const { user_id, cart } = req.body;
 
   try {
@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
    GET - Todas las órdenes
 ========================= */
 
-router.get("/", async (req, res) => {
+Router.get("/", async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT *
@@ -86,7 +86,7 @@ router.get("/", async (req, res) => {
    GET - Órdenes de un usuario
 ========================= */
 
-router.get("/user/:userId", async (req, res) => {
+Router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
@@ -114,7 +114,7 @@ router.get("/user/:userId", async (req, res) => {
    GET - Detalle de orden
 ========================= */
 
-router.get("/:id", async (req, res) => {
+Router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -144,4 +144,4 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = Router;

@@ -1,9 +1,9 @@
 const express = require("express");
 const pool = require("../config/db");
 
-const router = express.Router();
+const Router = express.Router();
 
-router.post("/", async (req, res) => {
+Router.post("/", async (req, res) => {
   try {
     const { cliente, productos, total } = req.body;
 
@@ -60,4 +60,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = Router;
