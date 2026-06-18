@@ -88,6 +88,7 @@ router.post("/login", async (req, res) => {
       {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
       process.env.JWT_SECRET,
       {
@@ -102,6 +103,7 @@ router.post("/login", async (req, res) => {
         id: user.id,
         nombre: user.nombre,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -111,6 +113,14 @@ router.post("/login", async (req, res) => {
       message: "Error al iniciar sesión",
     });
   }
+});
+
+router.get("/hash/:password", async (req, res) => {
+  const hash = await bcrypt.hash(req.params.password, 10);
+
+  res.json({
+    hash,
+  });
 });
 
 module.exports = router;

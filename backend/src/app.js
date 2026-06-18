@@ -1,11 +1,12 @@
 require("dotenv").config();
 require("./config/cloudinary");
 
-const ordersRoutes = require("./router/Orders.router");
+const ordersRoutes = require("./router/Orders.Router");
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./router/Auth.router");
 const uploadRoutes = require("./router/Upload.router");
+const dashboardRouter = require("./router/Dashboard.router");
 
 const productsRoutes = require("./router/Products.Router");
 
@@ -21,6 +22,7 @@ app.use("/orders", ordersRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/auth", authRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/dashboard", dashboardRouter);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
