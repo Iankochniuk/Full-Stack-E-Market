@@ -8,6 +8,7 @@ const authRoutes = require("./router/Auth.router");
 const uploadRoutes = require("./router/Upload.Router");
 const dashboardrouter = require("./router/Dashboard.Router");
 const productsRoutes = require("./router/Products.Router");
+const appRoutes = require("./router/App.Router");
 
 const app = express();
 
