@@ -7,9 +7,7 @@ function MyOrders() {
     const loadOrders = async () => {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      const response = await fetch(
-        `http://localhost:3000/orders/user/${user.id}`,
-      );
+      const response = await fetch(`${API_URL}/orders/user/${user.id}`);
 
       const data = await response.json();
 

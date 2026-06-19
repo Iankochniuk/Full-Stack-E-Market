@@ -8,7 +8,7 @@ function Orders() {
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const response = await fetch("http://localhost:3000/orders");
+        const response = await fetch("${API_URL}/orders");
 
         const data = await response.json();
 
@@ -29,7 +29,7 @@ function Orders() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/orders/${orderId}`);
+      const response = await fetch(`${API_URL}/orders/${orderId}`);
 
       const data = await response.json();
 

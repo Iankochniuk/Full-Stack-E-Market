@@ -11,7 +11,7 @@ function Admin() {
 
   const loadProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/products");
+      const response = await fetch("${API_URL}/products");
       const data = await response.json();
 
       setProducts(data);
@@ -22,7 +22,7 @@ function Admin() {
 
   const loadDashboard = async () => {
     try {
-      const response = await fetch("http://localhost:3000/dashboard");
+      const response = await fetch("${API_URL}/dashboard");
 
       const data = await response.json();
 
@@ -51,7 +51,7 @@ function Admin() {
 
         formData.append("image", imageFile);
 
-        const uploadResponse = await fetch("http://localhost:3000/upload", {
+        const uploadResponse = await fetch("${API_URL}/upload", {
           method: "POST",
           body: formData,
         });
@@ -70,8 +70,8 @@ function Admin() {
 
       const response = await fetch(
         editingProduct
-          ? `http://localhost:3000/products/${editingProduct.id}`
-          : "http://localhost:3000/products",
+          ? `${API_URL}/products/${editingProduct.id}`
+          : "${API_URL}/products",
         {
           method: editingProduct ? "PUT" : "POST",
           headers: {
@@ -106,7 +106,7 @@ function Admin() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/products/${id}`, {
+      const response = await fetch(`${API_URL}/products/${id}`, {
         method: "DELETE",
       });
 

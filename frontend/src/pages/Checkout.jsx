@@ -21,7 +21,7 @@ function Checkout() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/checkout", {
+      const response = await fetch("${API_URL}/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

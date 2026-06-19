@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/products";
+const API_URL = "${API_URL}/products";
 
 export const getProducts = async () => {
-  const response = await axios.get("http://localhost:3000/products");
+  const response = await axios.get("${API_URL}/products");
 
   return response.data;
 };

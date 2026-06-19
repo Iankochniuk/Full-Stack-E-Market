@@ -9,9 +9,9 @@ import AuthProvider from "./context/AuthContext";
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <CartProvider>
-      <BrowserRouter>
+      <BBrowserRouter>
         <App />
-      </BrowserRouter>
+      </BBrowserRouter>
     </CartProvider>
   </AuthProvider>,
 );

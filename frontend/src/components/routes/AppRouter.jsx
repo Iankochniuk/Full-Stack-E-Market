@@ -4,12 +4,12 @@ import ProductDetail from "../../pages/ProductDetail";
 import Checkout from "../../pages/Checkout";
 import Orders from "../../pages/Orders";
 import Login from "../../pages/Login";
-import ProtectedRoute from "./ProctectedRouter";
+import ProtectedRoute from "./Proctectedrouter";
 import Admin from "../../pages/Admin";
 import MyOrders from "../../pages/MyOrders";
 import Register from "../../pages/Register";
 
-function AppRouter() {
+function Approuter() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -47,4 +47,4 @@ function AppRouter() {
   );
 }
 
-export default AppRouter;
+export default Approuter;
