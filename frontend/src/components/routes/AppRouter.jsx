@@ -4,7 +4,7 @@ import ProductDetail from "../../pages/ProductDetail";
 import Checkout from "../../pages/Checkout";
 import Orders from "../../pages/Orders";
 import Login from "../../pages/Login";
-import ProtectedRoute from "./Proctectedrouter";
+import ProtectedRoute from "./ProctectedRouter";
 import Admin from "../../pages/Admin";
 import MyOrders from "../../pages/MyOrders";
 import Register from "../../pages/Register";
