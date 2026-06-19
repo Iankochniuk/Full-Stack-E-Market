@@ -4,7 +4,7 @@ require("./config/cloudinary");
 const ordersRoutes = require("./router/Orders.Router");
 const express = require("express");
 const cors = require("cors");
-const authRoutes = require("./router/Auth.Router");
+const authRoutes = require("./router/Auth.router");
 const uploadRoutes = require("./router/Upload.Router");
 const dashboardrouter = require("./router/Dashboard.Router");
 const productsRoutes = require("./router/Products.Router");
