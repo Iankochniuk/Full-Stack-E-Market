@@ -9,7 +9,7 @@ import Admin from "../../pages/Admin";
 import MyOrders from "../../pages/MyOrders";
 import Register from "../../pages/Register";
 
-function Approuter() {
+function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
